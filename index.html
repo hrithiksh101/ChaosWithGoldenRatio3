@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- Import Google Icon Font -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- Compiled and minified CSS , this is the materialize css -->
+    <link rel="stylesheet" href="./materialize/css/materialize.css" />
+    <!--Add your  Custom CSS Here -->
+    <link rel="stylesheet" href="./CSS/style.css" />
+
+    <title>Chaos With Golden Ratio</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper blue darken-2">
+        <a href="#" class="brand-logo center"
+          ><i class="material-icons icon-size"><big>map</big></i></a
+        >
+      </div>
+    </nav>
+
+    <div class="row">
+      <div class="col s12 m8 offset-m2">
+        <div class="card-panel purple darken-3">
+          <h1 class="center white-text">Hi guys !</h1>
+
+          <span class="white-text span-first-card">
+            I am hrithik Shrivastava , currently i was going through a lot of
+            projects in JavaScript and recently i watched a cool project from
+            github , so i thought why something  for myself. I'm also including
+            flow with river music with it , so enjoy listening to it while
+            trying out this project.
+            <br>
+            Thank you!
+          </span>
+
+
+
+          <br />
+          <!-- Linking the audio player -->
+          <audio  autoplay class="river" controls preload="metadata" style="width: 300px">
+            <source 
+               
+              src="./Audio/Yiruma, (이루마) - River Flows in You.mp3"
+              type="audio/mpeg" 
+                
+            />
+            Your browser does not support the audio element.</audio
+          ><br />
+        </div>
+      </div>
+    </div>
+
+    <!-- HTML CANVAS  SECTION -->
+
+    <div class="container center">
+      <canvas id="myCanvas" width="800" height="600" class="drawing-board">
+      </canvas>
+    </div>
+
+    <!-- This is the input section -->
+
+
+    <div class="container">
+
+      <div class="row">
+          <div class="col s12 m6 offset-m3">
+              <div class="card-panel white">
+
+                <h3 class="center" >Make your own pattern</h3>
+
+                <label for="first_name">Enter no. of vertices:</label>
+                <input id = "nthsidedpolygon" placeholder="at least 3 (  no. of vertices should be less than 6 to see good pattern ) ." id="first_name" type="text" class="validate">
+
+                <label for="first_name">Enter %age of distance to travel:</label>
+                <input id = "distratio" placeholder="try 61.8(1/phi or golden ratio) for good patterns ." id="first_name" type="text" class="validate">
+
+                 <div class="container center">
+                  <button onclick="playForSide()" class="btn purple" href="">Try it!</button>
+                 </div>
+
+                 <br>
+
+
+
+                  <span class="black-text">
+                    Default value of vertices is set to 3 and distance ratio is 50% , you can also 
+                    specify the no. of vertices and percentage ratio by yourself . Just enter the values 
+                    you desire in their corresponding input boxes and press button try it !   .
+                  </span>
+              </div>
+          </div>
+      </div>
+      
+  </div>
+
+    <!-- This is the accordion section -->
+
+    <div class="container center">
+      <ul class="collapsible popout">
+        <li>
+          <div class="collapsible-header">How this works ?</div>
+          <div class="collapsible-body">
+
+            <ul class="left-align" >
+              <li>1. We start with a random point.</li>
+              <li>2. In each step, we chose randomly one of the bigger vertex and move 50% (or what ever %age you specified) towards it from our current position.</li>
+              <li>3. We keep repeating the previous step as long as site is running.</li>
+
+            </ul>
+            
+             
+           
+          
+
+          </div>
+        </li>
+        
+
+      </ul>
+    </div>
+    <!-- This is the section for the project -->
+
+    <footer class="page-footer blue">
+      <div class="container"></div>
+      <div class="footer-copyright">
+        <div class="container center">
+          <h5>Made with ❤ by Hrithik Shrivastava</h5>
+        </div>
+      </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"
+      integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ=="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Compiled and minified JavaScript -->
+
+    <script src="./materialize/js/materialize.js"></script>
+
+    <script>
+      $(document).ready(function () {});
+    </script>
+
+    <script>
+      // this is the script for the canvas js
+
+      let canvas = document.getElementById('myCanvas');
+      var canvasContext = canvas.getContext('2d');
+
+      // ***************************************************************************************
+
+      // This was the expermental code for drawing some other code which did'nt word unfortunately
+
+
+      // ctx.beginPath();
+      // ctx.rect(0, 0, canvas.width, canvas.height);
+      // ctx.fillStyle = 'black';
+      // ctx.fill();
+
+      // ctx.closePath();
+
+      // so finally the path is also closed and we can now solve the problem
+
+      // let centerX = Math.random() * canvas.width;
+      // let centerY = Math.random() * canvas.height;
+
+      // //  after creating the height and the width of the canvas
+
+      // let RAD = 1;
+      // let POINTS = [];
+      // let N = 3;
+      // let distRatio = 0.5;
+
+      // //   i don't know what exactly this function is used for
+      // function playForSide() {
+      //   N = document.querySelector('.input-side');
+
+      //   if (N < 3) {
+      //     alert('vertices must be greater then 2');
+      //     return;
+      //   }
+
+      //   distRatio = document.querySelector('.input-ratio').value / 100;
+
+      //   //  now comes the fun part
+
+      //   if (distRatio > 0 && distRatio < 1) {
+      //     // everything is good here
+      //   } else {
+      //     alert('distance to travel must be less then 100% , try 61.8');
+      //     document.querySelector('.distRatio').value = 61.8;
+      //     distRatio = 61.8;
+      //   }
+
+      //   init();
+
+      //   //  initiating the
+      // }
+
+      // // function for coloring the circle
+      // let PADDING = 50;
+
+      // function colorCircle(centerX, centerY, radius, fillColor) {
+      //   ctx.beginPath();
+
+      //   ctx.fillStyle = fillColor;
+      //   ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+      //   ctx.fill();
+
+      //   ctx.closePath();
+      // }
+
+      // function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+      //   ctx.beginPath();
+
+      //   ctx.fillStyle = fillColor;
+      //   ctx.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+
+      //   ctx.closePath();
+      // }
+
+      // //  declaring the initital function
+
+      // function init() {
+      //   colorRect(0, 0, canvas.width, canvas.height, 'black');
+      //   draw();
+      // }
+
+      // //  now comes the main function draw
+
+      // function draw() {
+      //   let W = canvas.width;
+      //   let H = canvas.height;
+      //   let h = H - PADDING;
+
+      //   let origin = [W / 2, h / 2 + PADDING / 2];
+      //   let radii = h / 2;
+      //   let theta = (Math.PI * 2) / N;
+      //   let target = Math.floor(Math.random() * N);
+      //   //  randomly choosing one of the points
+
+      //   for (let i = 0; i < N; i++) {
+      //     let currentTheta = i * theta - Math.PI / 2;
+
+      //     // rotating by 90 degrees for better asthetics
+
+      //     POINTS[i] = [
+      //       origin[0] + radii * Math.cos(currentTheta),
+      //       origin[1] + radii * Math.sin(currentTheta),
+      //     ];
+
+      //     colorCircle(
+      //       POINTS[i][0],
+      //       POINTS[i][1],
+      //       RAD * 10,
+      //       i == target ? 'red' : 'cyan'
+      //     );
+      //   }
+
+      //   // coloring the circle of selection by cyan color
+
+      //   // this is used for the drawing of the circle
+
+      //   // changing the value of center x and center Y accordingly
+
+      //   colorCircle(centerX, centerX, RAD, 'cyan');
+
+      //   centerX = (distRatio * POINTS[target][0]) + (1 - distRatio) * centerX;
+      //   centerY = (distRatio * POINTS[target][1]) + (1 - distRatio) * centerY;
+
+      //   // recursively drawing the draw function after a set timeout
+      //   const myTimer = setTimeout(draw, 1000 / 300);
+      //   // speed can be changed here
+      // }
+
+      // window.onload = function () {
+      //   // calling the initialisation function on  loading of the window
+
+      //   init();
+      // };
+
+            // ***************************************************************************************
+
+      // ******************************************************************************************
+      let centerX = Math.random() * canvas.width;
+        let centerY = Math.random() * canvas.height;
+        let RAD = 1;
+        let POINTS = [];
+        let N = 3;
+        let PADDING = 50;
+        let distRatio = 0.5;
+        
+        function playForSide() {
+
+
+            // e.preventDefault() ;
+          
+          
+            N = document.querySelector('#nthsidedpolygon').value;
+            if (N < 3) {
+                alert('vertices must be greater than 2');
+                return;
+            }
+
+            distRatio = document.querySelector('#distratio').value/100;
+            if (distRatio > 0 && distRatio < 1) {
+                // all good here 
+            }
+            else {
+                alert('distance to travel must be less than 100%, try 61.8');
+                document.querySelector('#distratio').value = 61.8;
+                distRatio = 61.8;
+            }
+            
+            init();
+        }
+
+        function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+            canvasContext.beginPath();
+
+            canvasContext.fillStyle = fillColor;
+            canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+
+            canvasContext.closePath();
+        }
+        
+        function colorCircle(centerX,centerY, radius, fillColor) {
+            canvasContext.beginPath();
+
+            canvasContext.fillStyle = fillColor;
+            canvasContext.arc(centerX,centerY, radius, 0,Math.PI*2, true);
+            canvasContext.fill();
+
+            canvasContext.closePath();
+        }
+
+        function draw() {
+            let W = canvas.width;
+            let H = canvas.height;
+            let h = H - PADDING;
+            let origin = [W/2, h/2+PADDING/2];
+            let rad = h/2;
+            let theta = (Math.PI*2)/N; 
+            let target = Math.floor(Math.random() * N);
+
+            for (let i=0; i<N; i++) {
+                let currentTheta = i*theta - (Math.PI/2); //rotating by 90 degs for better aesthetics
+                POINTS[i] = [origin[0] + rad*Math.cos(currentTheta), origin[1]+rad*Math.sin(currentTheta)];
+                colorCircle(POINTS[i][0],POINTS[i][1], RAD*10, i == target?'red':'cyan');
+            }
+            
+            colorCircle(centerX, centerY, RAD, 'cyan');
+
+            
+            centerX = (distRatio * POINTS[target][0]) + (1-distRatio) * centerX;
+            centerY = (distRatio * POINTS[target][1]) + (1-distRatio) * centerY;
+
+            const myTimer = setTimeout(draw, 1000/300);
+        }
+        
+        function init() {
+            colorRect(0,0, canvas.width,canvas.height, 'black'); 
+            draw();
+        }
+
+        window.onload = function() {
+            init();
+        }
+      // ******************************************************************************************
+    </script>
+  </body>
+</html>
